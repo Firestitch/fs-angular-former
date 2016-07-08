@@ -75,11 +75,11 @@
                 angular.forEach(data,function(value,key) {
                     if (value === Object(value)){
                         appendObject(former, key, value);
-                    }else{
+                    } else {
                         former.append(angular.element("<input>")
                                         .attr('type','hidden')
-                                        .attr(name,key)
-                                        .attr(value,value));
+                                        .attr('name',key)
+                                        .attr('value',value));
                     }
                 });
 
