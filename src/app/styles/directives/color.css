@@ -1,0 +1,7 @@
+.md-color-picker-dialog .md-button[aria-label='Cancel'] {
+    display: none;
+}
+
+.md-color-picker-dialog .md-button[aria-label='Select'] {
+    width: 100% !important;
+}
