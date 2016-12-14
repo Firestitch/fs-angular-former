@@ -9,7 +9,7 @@
         var provider = this;
 
         this._options = {   url: null,
-                            data: {},                           
+                            data: {},
                             events: {
                                 begin: null
                             }};
@@ -38,14 +38,14 @@
                 submit: submit,
                 on: on
             };
-           
+
             return service;
 
             function submit(path, data, options) {
 
                 options = options || {};
                 data = data || {};
-                
+
                 var options = angular.extend(provider.options(),options);
 
                 if(options.events.begin) {
@@ -75,14 +75,16 @@
                 }
 
                 angular.forEach(data,function(value,key) {
-                    if (value === Object(value)){
-                        appendObject(former, key, value);
-                    } else {
-                        former.append(angular.element("<input>")
-                                        .attr('type','hidden')
-                                        .attr('name',key)
-                                        .attr('value',value));
+
+                    if(angular.isObject(value)) {
+                        value = value.toString();
                     }
+
+                    var i = document.createElement("input");
+                    i.setAttribute('type',"hidden");
+                    i.setAttribute('name',key);
+                    i.setAttribute('value',value);
+                    former.appendChild(i);
                 });
 
                 angular.element(document.body).append(former);
@@ -108,7 +110,7 @@
                 events[event] = value;
                 var options = provider.option('events', events);
                 return this;
-            }             
+            }
         }
     });
 })();
