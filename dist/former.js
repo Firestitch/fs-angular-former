@@ -84,7 +84,7 @@
                     i.setAttribute('type',"hidden");
                     i.setAttribute('name',key);
                     i.setAttribute('value',value);
-                    former.appendChild(i);
+                    former.append(i);
                 });
 
                 angular.element(document.body).append(former);
