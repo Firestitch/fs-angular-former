@@ -4,8 +4,9 @@
   "main": [
     "dist/former.js"
   ],
-   "dependencies": {
-  },  
+  "dependencies": {
+   	"fs-angular-browser": "^1.0.0"
+  },
   "authors": [
     "Firestitch Inc."
   ],

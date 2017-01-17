@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('fs-angular-former',[])
+    angular.module('fs-angular-former',['fs-angular-browser'])
     .provider('fsFormer', function () {
 
         var provider = this;
@@ -28,7 +28,7 @@
             this._options[name] = value;
         }
 
-        this.$get = function () {
+        this.$get = function (fsBrowser) {
 
             var data = {};
 
@@ -54,16 +54,7 @@
 
                 var former = angular.element(document.querySelector("#former"));
 
-                var target = '_blank';
-                var userAgent = window.navigator.userAgent;
-
-                var browsers = {chrome: /chrome/i, safari: /safari/i, firefox: /firefox/i, ie: /trident|msie|edge/i};
-
-                for(var key in browsers) {
-                    var search = browsers[key].test(userAgent);
-                    if (search == true && key == 'ie')
-                        target = '_self';
-                }
+                var target = fsBrowser.ie() || fsBrowser.safari() ? '_self' : '_blank';
 
                 if(!former.length) {
                     former = angular.element("<form>")
