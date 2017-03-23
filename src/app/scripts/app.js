@@ -27,7 +27,7 @@ angular
     });
 
     //fsFormerProvider.options({ url: CONFIG.api.url });
-    fsFormerProvider.options({ url: '/api' });
+    fsFormerProvider.options({ url: '' });
 })
 .run(function ($rootScope, BOWER, fsFormer) {
     $rootScope.app_name = BOWER.name;

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    angular.module('fs-angular-former',['fs-angular-browser'])
+    angular.module('fs-angular-former',['fs-angular-alert'])
     .provider('fsFormer', function () {
 
         var provider = this;
@@ -28,7 +28,7 @@
             this._options[name] = value;
         }
 
-        this.$get = function (fsBrowser) {
+        this.$get = function (fsAlert) {
 
             var data = {};
 
@@ -41,6 +41,8 @@
 
             function submit(path, data, options) {
 
+            	fsAlert.success('Your download has started');
+
                 options = options || {};
                 data = data || {};
 
@@ -52,16 +54,13 @@
 
                 var url = provider.option('url') + path;
 
-                var former = angular.element(document.querySelector("#former"));
+                angular.element(document.getElementById('fs-former')).remove();
 
-                var target = fsBrowser.ie() || fsBrowser.safari() ? '_self' : '_blank';
-
-                if(!former.length) {
-                    former = angular.element("<form>")
-                                .attr('action',url)
-                                .attr('method','POST')
-                                .attr('target','target');
-                }
+				var form = angular.element("<form>")
+								.attr('id','former-form')
+                        		.attr('action',url)
+                        		.attr('method','POST')
+                        		.attr('target','former-iframe');
 
                 angular.forEach(data,function(value,key) {
 
@@ -73,12 +72,25 @@
                     i.setAttribute('type',"hidden");
                     i.setAttribute('name',key);
                     i.setAttribute('value',value);
-                    former.append(i);
+                    form.append(i);
                 });
 
-                angular.element(document.body).append(former);
-                former[0].submit();
-                former.remove();
+	  			var body = angular.element("<html>")
+	  						.append(angular.element("<body>"));
+
+				var iframe = angular.element('<iframe>')
+								.attr('id','former-iframe')
+								.attr('name','former-iframe')
+								.attr('src','about:blank');
+
+				angular.element(document.body)
+					.append(angular.element('<fs-former>')
+								.attr('id','fs-former')
+								.attr('style','display:none')
+								.append(form)
+								.append(iframe));
+
+                form[0].submit();
             }
 
             function appendObject(former, key, value){

@@ -5,7 +5,7 @@
     "dist/former.js"
   ],
   "dependencies": {
-   	"fs-angular-browser": "^1.0.0"
+   	"fs-angular-alert": "^1.0.0"
   },
   "authors": [
     "Firestitch Inc."
