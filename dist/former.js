@@ -43,7 +43,7 @@
 
             function submit(path, data, options) {
 
-            	fsAlert.success('Your download has started');
+            	fsAlert.info('Preparing file for download...');
 
                 options = options || {};
                 data = data || {};
