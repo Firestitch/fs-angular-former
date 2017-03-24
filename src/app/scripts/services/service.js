@@ -53,13 +53,13 @@
                 }
 
                 var url = provider.option('url') + path;
-
+                var method = options.method ? options.method : 'POST';
                 angular.element(document.getElementById('fs-former')).remove();
 
 				var form = angular.element("<form>")
 								.attr('id','former-form')
                         		.attr('action',url)
-                        		.attr('method','POST')
+                        		.attr('method',method)
                         		.attr('target','former-iframe');
 
                 angular.forEach(data,function(value,key) {
