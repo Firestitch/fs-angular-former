@@ -1,5 +1,7 @@
 
 
+
+
 (function () {
     'use strict';
 
@@ -30,7 +32,7 @@
             this._options[name] = value;
         }
 
-        this.$get = function (fsAlert) {
+        this.$get = function (fsAlert,$http,$mdToast,$timeout) {
 
             var data = {};
 
@@ -43,7 +45,11 @@
 
             function submit(path, data, options) {
 
-            	fsAlert.info('Preparing file for download...');
+            	var alertTimer = $timeout(function() {
+            		$mdToast.hide();
+            	},3000);
+
+            	fsAlert.info('Preparing file for download...',{ hideDelay: 0 });
 
                 options = options || {};
                 data = data || {};
@@ -55,6 +61,7 @@
                 }
 
                 var url = provider.option('url') + path;
+
                 var method = options.method ? options.method : 'POST';
                 angular.element(document.getElementById('fs-former')).remove();
 
@@ -82,8 +89,23 @@
 
 				var iframe = angular.element('<iframe>')
 								.attr('id','former-iframe')
-								.attr('name','former-iframe')
-								.attr('src','about:blank');
+								.attr('name','former-iframe');
+
+				window.fsFormerLoaded = function(e) {
+
+					var message = 'There was a problem trying to download the file';
+
+					try {
+						var doc = document.getElementById('former-iframe').contentWindow.document.body;
+						message += '<a href ng-click="more=true" ng-show="more" style="color:#ccc">Details<a><div ng-show="more" style="padding-top:5px">' + angular.element(doc).text() + '</div>';
+					} catch(e) {}
+
+					$timeout.cancel(alertTimer);
+					$mdToast.hide();
+					setTimeout(function() {
+						fsAlert.error(message,{ mode: 'toast', hideDelay: 10 });
+					},1000);
+				}
 
 				angular.element(document.body)
 					.append(angular.element('<fs-former>')
@@ -92,6 +114,7 @@
 								.append(form)
 								.append(iframe));
 
+				iframe.attr('onload','fsFormerLoaded()');
                 form[0].submit();
             }
 
@@ -117,4 +140,5 @@
         }
     });
 })();
+
 

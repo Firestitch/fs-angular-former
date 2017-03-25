@@ -7,8 +7,8 @@ angular
     'ngMaterial',
     'fs-angular-former'
 ])
-.config(function ($stateProvider, $urlRouterProvider, fsFormerProvider) {
-
+.config(function ($stateProvider, $urlRouterProvider, fsFormerProvider, $httpProvider) {
+ $httpProvider.defaults.headers = {'Hello': 'aaaa'};
     $urlRouterProvider
     .otherwise('/404')
     .when('', '/demo')
