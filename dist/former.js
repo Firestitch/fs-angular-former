@@ -97,7 +97,19 @@
 
 					try {
 						var doc = document.getElementById('former-iframe').contentWindow.document.body;
-						message += '<a href ng-click="more=true" style="color:#ccc">Details<a><div ng-show="more" style="padding-top:5px">' + angular.element(doc).text() + '</div>';
+						var details = angular.element(doc).text();
+						try {
+							var data = JSON.parse(details);
+
+							if(data.message) {
+								details = data.message;
+							} else if(data.error) {
+								details = data.error;
+							}
+
+						} catch(e) {}
+
+						message += '<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px">' + details + '</div>';
 					} catch(e) {}
 
 					$timeout.cancel(alertTimer);
