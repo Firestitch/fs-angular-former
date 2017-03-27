@@ -95,7 +95,7 @@
 
 					try {
 						var doc = document.getElementById('former-iframe').contentWindow.document.body;
-						message += '<a href ng-click="more=true" ng-show="more" style="color:#ccc">Details<a><div ng-show="more" style="padding-top:5px">' + angular.element(doc).text() + '</div>';
+						message += '<a href ng-click="more=true" style="color:#ccc">Details<a><div ng-show="more" style="padding-top:5px">' + angular.element(doc).text() + '</div>';
 					} catch(e) {}
 
 					$timeout.cancel(alertTimer);
