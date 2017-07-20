@@ -2,7 +2,8 @@
   "name": "fs-angular-former",
   "description": "",
   "main": [
-    "dist/former.js"
+    "dist/former.js",
+    "dist/former.css"
   ],
   "dependencies": {
    	"fs-angular-alert": "^1.0.0"
