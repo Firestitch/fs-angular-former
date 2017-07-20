@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('fs-angular-former',['fs-angular-alert'])
+    angular.module('fs-angular-former')
     .provider('fsFormer', function () {
 
         var provider = this;
@@ -52,16 +52,19 @@
                 options = options || {};
                 data = data || {};
 
-                var options = angular.extend(provider.options(),options);
+                var options = angular.extend({},provider.options(),options);
 
                 if(options.events.begin) {
                     options.events.begin(data,options);
                 }
 
-                var url = provider.option('url') + path;
+                var url = path;
+                if(!path.match(/^http/)) {
+                	url = provider.option('url') + path;
+                }
 
                 var method = options.method ? options.method : 'POST';
-                angular.element(document.getElementById('fs-former')).remove();
+                angular.element(document.getElementById('fs-former-iframe')).remove();
 
 				var form = angular.element("<form>")
 								.attr('id','former-form')
@@ -107,7 +110,7 @@
 
 						} catch(e) {}
 
-						message += '<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px">' + details + '</div>';
+						message += '<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 					} catch(e) {}
 
 					$timeout.cancel(alertTimer);
@@ -117,12 +120,17 @@
 					},1000);
 				}
 
-				angular.element(document.body)
-					.append(angular.element('<fs-former>')
-								.attr('id','fs-former')
-								.attr('style','display:none')
-								.append(form)
-								.append(iframe));
+				var formerIframe = options.element;
+				if(!formerIframe) {
+					formerIframe = angular.element('<fs-former-iframe>')
+										.attr('id','fs-former-iframe');
+
+					angular.element(document.body).append(formerIframe);
+				}
+
+				formerIframe
+					.append(form)
+					.append(iframe);
 
 				iframe.attr('onload','fsFormerLoaded()');
                 form[0].submit();

@@ -13,19 +13,16 @@
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
-    <link rel="stylesheet" href="styles/main.css">    
+    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    <link rel="stylesheet" href="styles/directives/color.css">
+    <link rel="stylesheet" href="styles/directives/former.css">
   </head>
   <body class="ng-cloak">
 
-    <!-- View Container for "normal" pages -->
-    <md-content layout="row" layout-align="center center">
-        <div flex="50">  
-            <h1 ng-cloak>Demo {{app_name}}</h1>
-            <div ui-view></div>
-        </div>
-    </md-content>
+
+    <h1 ng-cloak>Demo {{app_name}}</h1>
+    <div ui-view></div>
+
 
     <!-- build:js({.,app}) scripts/vendor.js -->
     <!-- bower:js -->
@@ -36,22 +33,22 @@
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/fs-angular-alert/dist/alert.js"></script>
-    <!-- endbower -->    
+    <!-- endbower -->
     <!-- endbuild -->
 
     <!-- build:js({.tmp,dist,app}) scripts/scripts.js -->
-    
+
     <script src="config/config.js"></script>
     <script src="scripts/app.js"></script>
 
+    <script src="scripts/directives/directive.js"></script>
+
     <script src="scripts/services/service.js"></script>
 
-    <script src="scripts/directives/directive.js"></script>
-    
-    <script src="scripts/filters/filter.js"></script>    
-    
+    <script src="scripts/filters/filter.js"></script>
+
     <script src="scripts/controllers/demo.js"></script>
-    
+
     <!-- endbuild -->
 </body>
 </html>
