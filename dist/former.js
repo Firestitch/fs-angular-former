@@ -144,13 +144,13 @@
 										.attr('id','fs-former-iframe');
 
 					angular.element(document.body).append(formerIframe);
+					iframe.attr('onload','fsFormerLoaded()');
 				}
 
 				formerIframe
 					.append(form)
 					.append(iframe);
 
-				iframe.attr('onload','fsFormerLoaded()');
                 form[0].submit();
             }
 
