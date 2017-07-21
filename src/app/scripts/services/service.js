@@ -94,24 +94,24 @@
 
 				window.fsFormerLoaded = function(e) {
 
-					var message = 'There was a problem trying to download the file';
+					var doc = document.getElementById('former-iframe').contentWindow.document.body;
+					var details = angular.element(doc).text();
+
+					if(!details)
+						return;
 
 					try {
-						var doc = document.getElementById('former-iframe').contentWindow.document.body;
-						var details = angular.element(doc).text();
-						try {
-							var data = JSON.parse(details);
+						var data = JSON.parse(details);
 
-							if(data.message) {
-								details = data.message;
-							} else if(data.error) {
-								details = data.error;
-							}
+						if(data.message) {
+							details = data.message;
+						} else if(data.error) {
+							details = data.error;
+						}
 
-						} catch(e) {}
-
-						message += '<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 					} catch(e) {}
+
+					message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 
 					$timeout.cancel(alertTimer);
 					$mdToast.hide();
