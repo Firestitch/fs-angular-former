@@ -18,6 +18,8 @@
 })();
 
 
+
+
 (function () {
     'use strict';
 
@@ -71,6 +73,7 @@
                 data = data || {};
 
                 var options = angular.extend({},provider.options(),options);
+                options.target = options.target || 'former-iframe';
 
                 if(options.events.begin) {
                     options.events.begin(data,options);
@@ -88,7 +91,7 @@
 								.attr('id','former-form')
                         		.attr('action',url)
                         		.attr('method',method)
-                        		.attr('target','former-iframe');
+                        		.attr('target',options.target);
 
                 angular.forEach(data,function(value,key) {
 
@@ -129,7 +132,7 @@
 
 					} catch(e) {}
 
-					message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
+					var message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 
 					$timeout.cancel(alertTimer);
 					$mdToast.hide();
