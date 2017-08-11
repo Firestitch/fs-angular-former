@@ -11,15 +11,11 @@
 	        	data: '=?fsData'
 	        },
 	        link: function($scope, element) {
-	        	fsFormer.submit($scope.path,$scope.data,{ element: element });
+	        	fsFormer.inline($scope.path, $scope.data, element);
 	        }
 	    }
     });
 })();
-
-
-
-
 (function () {
     'use strict';
 
@@ -56,10 +52,18 @@
 
             var service = {
                 submit: submit,
+                inline: inline,
                 on: on
             };
 
             return service;
+
+            function inline(path, data, element, options) {
+            	options = options || {};
+            	options.element = element;
+            	options.type = 'inline';
+				submit(path, data, options);
+            }
 
             function submit(path, data, options) {
 
@@ -74,6 +78,7 @@
 
                 var options = angular.extend({},provider.options(),options);
                 options.target = options.target || 'former-iframe';
+                options.type = options.type || 'iframe';
 
                 if(options.events.begin) {
                     options.events.begin(data,options);
@@ -85,7 +90,7 @@
                 }
 
                 var method = options.method ? options.method : 'POST';
-                angular.element(document.getElementById('fs-former-iframe')).remove();
+                angular.element(document.getElementById('fs-former-container')).remove();
 
 				var form = angular.element("<form>")
 								.attr('id','former-form')
@@ -109,50 +114,66 @@
 	  			var body = angular.element("<html>")
 	  						.append(angular.element("<body>"));
 
-				var iframe = angular.element('<iframe>')
-								.attr('id','former-iframe')
-								.attr('name','former-iframe');
+				var container = angular.element('<fs-former-container>')
+												.attr('id','fs-former-container')
+												.attr('data-type',options.type);
 
-				window.fsFormerLoaded = function(e) {
+				angular.element(document.body).append(container);
 
-					var doc = document.getElementById('former-iframe').contentWindow.document.body;
-					var details = angular.element(doc).text();
+				if(options.element) {
+					container.append(options.element);
+					container = options.element;
+				}
 
-					if(!details)
-						return;
+	  			if(options.type=='iframe' || options.type=='inline') {
+					var iframe = angular.element('<iframe>')
+									.attr('id','former-iframe')
+									.attr('name','former-iframe')
+									.attr('src','about:blank');
 
-					try {
-						var data = JSON.parse(details);
+					window.fsFormerLoaded = function(e) {
 
-						if(data.message) {
-							details = data.message;
-						} else if(data.error) {
-							details = data.error;
+						try {
+
+							var doc = document.getElementById('former-iframe').contentWindow.document.body;
+							var details = angular.element(doc).text();
+
+							if(!details)
+								return;
+
+							try {
+								var data = JSON.parse(details);
+
+								if(data.message) {
+									details = data.message;
+								} else if(data.error) {
+									details = data.error;
+								}
+
+							} catch(e) {}
+
+						} catch(e) {
+							details = e.message;
 						}
 
-					} catch(e) {}
+						var message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 
-					var message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
+						$timeout.cancel(alertTimer);
+						$mdToast.hide();
+						setTimeout(function() {
+							fsAlert.error(message,{ mode: 'toast', hideDelay: 10 });
+						},1000);
+					}
 
-					$timeout.cancel(alertTimer);
-					$mdToast.hide();
-					setTimeout(function() {
-						fsAlert.error(message,{ mode: 'toast', hideDelay: 10 });
-					},1000);
-				}
-
-				var formerIframe = options.element;
-				if(!formerIframe) {
-					formerIframe = angular.element('<fs-former-iframe>')
-										.attr('id','fs-former-iframe');
-
-					angular.element(document.body).append(formerIframe);
 					iframe.attr('onload','fsFormerLoaded()');
-				}
 
-				formerIframe
-					.append(form)
-					.append(iframe);
+					container
+						.append(form)
+						.append(iframe);
+
+				} else {
+					container.append(form);
+				}
 
                 form[0].submit();
             }

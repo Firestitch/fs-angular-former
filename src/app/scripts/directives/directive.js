@@ -10,7 +10,7 @@
 	        	data: '=?fsData'
 	        },
 	        link: function($scope, element) {
-	        	fsFormer.submit($scope.path,$scope.data,{ element: element });
+	        	fsFormer.inline($scope.path, $scope.data, element);
 	        }
 	    }
     });

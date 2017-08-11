@@ -5,11 +5,11 @@
   .controller('DemoCtrl', function ($scope, fsFormer) {
 
   	$scope.download = function() {
-  		fsFormer.submit('http://boilerplate.local.firestitch.com/api/dummy/download', {}, {});
+  		fsFormer.submit('http://boilerplate.local.firestitch.com/api/dummy/download', { format: 'csv' }, {});
   	}
 
   	$scope.view = function() {
-  		fsFormer.submit('http://tuition.local.firestitch.com/pdf?template=invoice&format=inlinepdf', {}, {});
+  		fsFormer.submit('http://boilerplate.local.firestitch.com/api/dummy/download', { format: 'pdf' }, {});
   	}
 
 
