@@ -28,7 +28,7 @@
             this._options[name] = value;
         }
 
-        this.$get = function (fsAlert,$http,$mdToast,$timeout) {
+        this.$get = function ($http) {
 
             var data = {};
 
@@ -49,11 +49,10 @@
 
             function submit(path, data, options) {
 
-            	var alertTimer = $timeout(function() {
-            		$mdToast.hide();
-            	},3000);
-
-            	fsAlert.info('Preparing file for download...',{ hideDelay: 0 });
+                var onInfo = provider.option('onInfo');
+                if(onInfo) {
+                    onInfo('Preparing file for download...')
+                }
 
                 options = options || {};
                 data = data || {};
@@ -140,11 +139,11 @@
 
 						var message = ' There was a problem trying to download the file<a href ng-click="more=true" style="color:#ccc"> Details<a><div ng-show="more" style="padding-top:5px;color:#fff">' + details + '</div>';
 
-						$timeout.cancel(alertTimer);
-						$mdToast.hide();
-						setTimeout(function() {
-							fsAlert.error(message,{ mode: 'toast', hideDelay: 10 });
-						},1000);
+                        var onError = provider.option('onError');
+                        if(onError) {
+                            onError(message);
+                        }
+
 					}
 
 					iframe.attr('onload','fsFormerLoaded()');
