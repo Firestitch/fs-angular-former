@@ -58,7 +58,7 @@
               options.events.begin(data,options);
           }
 
-          var onInfo = provider.option('onInfo');
+          var onInfo = options.onInfo;
           if(onInfo) {
             onInfo('Preparing file for download...')
           }
