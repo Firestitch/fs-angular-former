@@ -119,8 +119,14 @@
 							var doc = document.getElementById('former-iframe').contentWindow.document.body;
 							var details = angular.element(doc).text();
 
-							if(!details)
-								return;
+							if(!details) {
+                var onComplete = provider.option('onComplete');
+                if(onComplete) {
+                  onComplete();
+                }
+
+                return;
+              }
 
 							try {
 								var data = JSON.parse(details);
