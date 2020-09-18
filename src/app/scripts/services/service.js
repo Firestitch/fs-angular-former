@@ -118,7 +118,7 @@
               var details = angular.element(doc).text();
 
               if(!details) {
-                var onComplete = provider.option('onComplete');
+                var onComplete = options.onComplete;
                 if(onComplete) {
                   onComplete();
                 }
